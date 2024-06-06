@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SpringbootTabelogKadaiApplication {
+public class TabelogKadaiApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SpringbootTabelogKadaiApplication.class, args);
+		SpringApplication.run(TabelogKadaiApplication.class, args);
 	}
 
 }
