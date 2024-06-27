@@ -669,3 +669,58 @@ VALUES
    1,
    false
 );
+-- reservationsテーブル
+INSERT IGNORE INTO reservations
+(
+   id,
+   house_id,
+   user_id,
+   checkin_date,
+   number_of_people,
+   amount
+)
+VALUES
+(
+   1,
+   1,
+   1,
+   '2024-04-01',
+   2,
+   2000
+);
+INSERT IGNORE INTO reservations
+(
+   id,
+   house_id,
+   user_id,
+   checkin_date,
+   number_of_people,
+   amount
+)
+VALUES
+(
+   2,
+   2,
+   1,
+   '2024-04-02',
+   3,
+   6000
+);
+INSERT IGNORE INTO reservations
+(
+   id,
+   house_id,
+   user_id,
+   checkin_date,
+   number_of_people,
+   amount
+)
+VALUES
+(
+   3,
+   3,
+   1,
+   '2024-04-03',
+   4,
+   4000
+);
