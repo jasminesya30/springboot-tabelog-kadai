@@ -3,10 +3,9 @@
 
 <head>
 	<div th:replace="~{fragment :: meta}"></div>
-
 	<div th:replace="~{fragment :: styles}"></div>
-
 	<title>予約一覧</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
 
 <body>
@@ -31,7 +30,21 @@
 							予約が完了しました。
 						</div>
 
-						<table class="table">
+						<form th:action="@{/reservations}" th:object="${reservationInputForm}" method="post">
+							<div class="mb-3">
+								<label for="checkinDate" class="form-label">予約日時</label>
+								<input type="text" id="checkinDate" th:field="*{checkinDateString}" class="form-control"
+									placeholder="予約日時を選択してください">
+							</div>
+							<div class="mb-3">
+								<label for="numberOfPeople" class="form-label">予約人数</label>
+								<input type="number" id="numberOfPeople" th:field="*{numberOfPeople}"
+									class="form-control" placeholder="予約人数を入力してください">
+							</div>
+							<button type="submit" class="btn btn-primary">予約する</button>
+						</form>
+
+						<table class="table mt-5">
 							<thead>
 								<tr>
 									<th scope="col">店舗名</th>
@@ -61,7 +74,7 @@
 									<li class="page-item">
 										<span th:if="${reservationPage.isFirst()}" class="page-link disabled">前</span>
 										<a th:unless="${reservationPage.isFirst()}"
-											th:href="@{/reservations(page = ${reservationPage.getNumber() - 1})}"
+											th:href="@{/reservations(page=${reservationPage.getNumber() - 1})}"
 											class="page-link samuraitravel-page-link">前</a>
 									</li>
 									<li th:each="i : ${#numbers.sequence(0, reservationPage.getTotalPages() - 1)}"
@@ -69,13 +82,13 @@
 										<span th:if="${i == reservationPage.getNumber()}"
 											class="page-link active samuraitravel-active" th:text="${i + 1}"></span>
 										<a th:unless="${i == reservationPage.getNumber()}"
-											th:href="@{/reservations(page = ${i})}"
+											th:href="@{/reservations(page=${i})}"
 											class="page-link samuraitravel-page-link" th:text="${i + 1}"></a>
 									</li>
 									<li class="page-item">
 										<span th:if="${reservationPage.isLast()}" class="page-link disabled">次</span>
 										<a th:unless="${reservationPage.isLast()}"
-											th:href="@{/reservations(page = ${reservationPage.getNumber() + 1})}"
+											th:href="@{/reservations(page=${reservationPage.getNumber() + 1})}"
 											class="page-link samuraitravel-page-link">次</a>
 									</li>
 								</ul>
@@ -91,6 +104,24 @@
 	</div>
 
 	<div th:replace="~{fragment :: scripts}"></div>
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			let maxDate = new Date();
+			maxDate.setMonth(maxDate.getMonth() + 3); // 最大日付を現在から3ヶ月後に設定
+
+			flatpickr('#checkinDate', {
+				enableTime: true, // 時間を有効にする
+				dateFormat: "Y-m-d H:i", // 日付フォーマットを指定
+				locale: 'ja',
+				minDate: 'today',
+				maxDate: maxDate,
+				time_24hr: true, // 24時間制を使用
+				minuteIncrement: 30 // 30分単位で選択可能にする
+			});
+		});
+	</script>
 </body>
 
 </html>

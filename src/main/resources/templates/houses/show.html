@@ -6,6 +6,10 @@
 
 	<div th:replace="~{fragment :: styles}"></div>
 
+	<!-- Flatpickr -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+
 	<title>店舗詳細</title>
 </head>
 
@@ -76,11 +80,11 @@
 
 									<div class="row pb-2 mb-2 border-bottom">
 										<div class="col-4">
-											<span class="fw-bold">定員</span>
+											<span class="fw-bold" 座席数</span>
 										</div>
 
 										<div class="col">
-											<span th:text="${house.getCapacity() + '人'}"></span>
+											<span th:text="${house.getCapacity() + '席'}"></span>
 										</div>
 									</div>
 
@@ -125,6 +129,43 @@
 										</div>
 									</div>
 								</div>
+
+								<div sec:authorize="isAuthenticated()" class="col-lg-4 px-0 ps-lg-4 mb-4">
+									<div class="card">
+										<div class="card-body">
+											<form method="get"
+												th:action="@{/houses/__${house.getId()}__/reservations/input}"
+												th:object="${reservationInputForm}">
+												<div class="form-group mb-2">
+													<label for="reservationDateTime"
+														class="col-form-label text-md-left fw-bold">予約日時</label>
+													<div th:if="${#fields.hasErrors('fromCheckinDateToCheckoutDate')}"
+														class="text-danger small mb-2"
+														th:errors="*{fromCheckinDateToCheckoutDate}"></div>
+													<input type="datetime-local" class="form-control"
+														id="reservationDateTime"
+														th:field="*{fromCheckinDateToCheckoutDate}">
+												</div>
+
+												<div class="form-group mb-4">
+													<label for="numberOfPeople"
+														class="col-form-label text-md-left fw-bold">予約人数</label>
+													<div th:if="${#fields.hasErrors('numberOfPeople')}"
+														class="text-danger small mb-2" th:errors="*{numberOfPeople}">
+													</div>
+													<input type="number" class="form-control"
+														th:field="*{numberOfPeople}" min="1">
+												</div>
+
+												<div class="form-group">
+													<button type="submit"
+														class="btn text-white shadow-sm w-100 samuraitravel-btn">予約する</button>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+
 							</div>
 						</div>
 					</div>
@@ -137,6 +178,12 @@
 	</div>
 
 	<div th:replace="~{fragment :: scripts}"></div>
+
+	<!-- Flatpickr -->
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
+	<script th:src="@{/js/flatpickr.js}"></script>
+
 </body>
 
 </html>

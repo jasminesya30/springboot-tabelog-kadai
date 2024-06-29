@@ -6,7 +6,7 @@
 
 	<div th:replace="~{fragment :: styles}"></div>
 
-	<title>NAGOYAMESHI</title>
+	<title>予約一覧</title>
 </head>
 
 <body>
@@ -15,56 +15,78 @@
 		<div th:replace="~{fragment :: header}"></div>
 
 		<main>
-			<div class="container pt-4 pb-5 samuraitravel-container">
-				<div th:if="${param.loggedIn}" class="alert alert-info">
-					ログインしました。
-				</div>
-
-				<div th:if="${param.loggedOut}" class="alert alert-info">
-					ログアウトしました。
-				</div>
-
-				<div th:if="${successMessage}" class="alert alert-info">
-					<span th:text="${successMessage}"></span>
-				</div>
-				<div class="d-flex justify-content-center">
-					<form method="get" th:action="@{/houses}" class="mb-5 samuraitravel-search-form">
-						<div class="input-group">
-							<input type="text" class="form-control" name="keyword" th:value="${keyword}"
-								placeholder="店舗名">
-							<button type="submit" class="btn text-white shadow-sm samuraitravel-btn">検索</button>
-						</div>
-					</form>
-				</div>
-
-				<h2 class="text-center mb-3">新着</h2>
-				<div class="row row-cols-lg-5 row-cols-2 g-3 mb-5">
-					<div class="col" th:each="newHouse : ${newHouses}">
-						<a th:href="@{/houses/__${newHouse.getId()}__}" class="link-dark samuraitravel-card-link">
-							<div class="card h-100">
-								<img th:if="${newHouse.getImageName()}"
-									th:src="@{/storage/__${newHouse.getImageName()}__}"
-									class="card-img-top samuraitravel-vertical-card-image" alt="店舗画像">
-								<img th:unless="${newHouse.getImageName()}" th:src="@{/images/noImage.png}"
-									class="card-img-top samuraitravel-vertical-card-image" alt="NO IMAGE">
-								<div class="card-body">
-									<h3 class="card-title" th:text="${newHouse.getName()}"></h3>
-									<p class="card-text mb-1">
-										<small class="text-muted" th:text="${newHouse.getAddress()}"></small>
-									</p>
-									<p class="card-text">
-										<span
-											th:text="${#numbers.formatInteger(newHouse.getPrice(), 1, 'COMMA') + '円 / 食'}"></span>
-									</p>
-								</div>
-							</div>
-						</a>
-					</div>
-				</div>
-
+			<div class="container samuraitravel-container pb-5">
 				<div class="row justify-content-center">
-					<div class="col-xl-5 col-lg-6 col-md-8">
+					<div class="col-xxl-9 col-xl-10 col-lg-11">
+						<nav class="my-3" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+							<ol class="breadcrumb mb-0">
+								<li class="breadcrumb-item"><a th:href="@{/}">ホーム</a></li>
+								<li class="breadcrumb-item active" aria-current="page">予約一覧</li>
+							</ol>
+						</nav>
+
+						<h1 class="mb-3 text-center">予約一覧</h1>
+
+						<div th:if="${param.reserved}" class="alert alert-info">
+							予約が完了しました。
+						</div>
+
+						<table class="table">
+							<thead>
+								<tr>
+									<th scope="col">店舗名</th>
+									<th scope="col">予約日</th>
+									<th scope="col">予約時刻</th>
+									<th scope="col">予約人数</th>
+									<th scope="col">料金目安</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="reservation : ${reservationPage}">
+									<td>
+										<a th:href="@{/houses/__${reservation.getHouse().getId()}__}"
+											th:text="${reservation.getHouse().getName()}"></a>
+									</td>
+									<td th:text="${reservation.getReservationDate()}"></td>
+									<td th:text="${reservation.getReservationTime()}"></td>
+									<td th:text="${reservation.getNumberOfPeople() + '名'}"></td>
+									<td th:text="${#numbers.formatInteger(reservation.getAmount(), 1, 'COMMA') + '円'}">
+									</td>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+
+						<!-- ページネーション -->
+						<div th:if="${reservationPage.getTotalPages() > 1}" class="d-flex justify-content-center">
+							<nav aria-label="予約一覧ページ">
+								<ul class="pagination">
+									<li class="page-item">
+										<span th:if="${reservationPage.isFirst()}" class="page-link disabled">前</span>
+										<a th:unless="${reservationPage.isFirst()}"
+											th:href="@{/reservations(page = ${reservationPage.getNumber() - 1})}"
+											class="page-link samuraitravel-page-link">前</a>
+									</li>
+									<li th:each="i : ${#numbers.sequence(0, reservationPage.getTotalPages() - 1)}"
+										class="page-item">
+										<span th:if="${i == reservationPage.getNumber()}"
+											class="page-link active samuraitravel-active" th:text="${i + 1}"></span>
+										<a th:unless="${i == reservationPage.getNumber()}"
+											th:href="@{/reservations(page = ${i})}"
+											class="page-link samuraitravel-page-link" th:text="${i + 1}"></a>
+									</li>
+									<li class="page-item">
+										<span th:if="${reservationPage.isLast()}" class="page-link disabled">次</span>
+										<a th:unless="${reservationPage.isLast()}"
+											th:href="@{/reservations(page = ${reservationPage.getNumber() + 1})}"
+											class="page-link samuraitravel-page-link">次</a>
+									</li>
+								</ul>
+							</nav>
+						</div>
 					</div>
+				</div>
+			</div>
 		</main>
 
 		<!-- フッター -->
