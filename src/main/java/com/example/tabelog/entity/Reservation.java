@@ -2,6 +2,7 @@ package com.example.tabelog.entity;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -30,8 +31,11 @@ public class Reservation {
 	@JoinColumn(name = "user_id")
 	private User user;
 
-	@Column(name = "checkin_date")
-	private LocalDate CheckinDate;
+	@Column(name = "reservation_date")
+	private LocalDate reservationDate;
+
+	@Column(name = "reservation_time")
+	private LocalTime reservationTime;
 
 	@Column(name = "number_of_people")
 	private Integer numberOfPeople;
@@ -44,4 +48,5 @@ public class Reservation {
 
 	@Column(name = "updated_at", insertable = false, updatable = false)
 	private Timestamp updatedAt;
+
 }
