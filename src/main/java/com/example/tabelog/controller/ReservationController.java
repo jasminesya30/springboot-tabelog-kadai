@@ -28,18 +28,23 @@ import com.example.tabelog.repository.HouseRepository;
 import com.example.tabelog.repository.ReservationRepository;
 import com.example.tabelog.security.UserDetailsImpl;
 import com.example.tabelog.service.ReservationService;
+import com.example.tabelog.service.StripeService;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 public class ReservationController {
 	private final ReservationRepository reservationRepository;
 	private final HouseRepository houseRepository;
 	private final ReservationService reservationService;
+	private final StripeService stripeService;
 
 	public ReservationController(ReservationRepository reservationRepository, HouseRepository houseRepository,
-			ReservationService reservationService) {
+			ReservationService reservationService, StripeService stripeService) {
 		this.reservationRepository = reservationRepository;
 		this.houseRepository = houseRepository;
 		this.reservationService = reservationService;
+		this.stripeService = stripeService;
 	}
 
 	@GetMapping("/reservations")
@@ -48,9 +53,9 @@ public class ReservationController {
 			Model model) {
 		User user = userDetailsImpl.getUser();
 		Page<Reservation> reservationPage = reservationRepository.findByUserOrderByCreatedAtDesc(user, pageable);
-
+		model.addAttribute("user", user);
+		model.addAttribute("reservationInputForm", new ReservationInputForm());
 		model.addAttribute("reservationPage", reservationPage);
-
 		return "reservations/index";
 	}
 
@@ -67,7 +72,7 @@ public class ReservationController {
 		if (numberOfPeople != null) {
 			if (!reservationService.isWithinCapacity(numberOfPeople, capacity)) {
 				FieldError fieldError = new FieldError(bindingResult.getObjectName(), "numberOfPeople",
-						"予約人数が定員を超えています。");
+						"予約人数が座席数を超えています。");
 				bindingResult.addError(fieldError);
 			}
 		}
@@ -87,13 +92,16 @@ public class ReservationController {
 	public String confirm(@PathVariable(name = "id") Integer id,
 			@ModelAttribute ReservationInputForm reservationInputForm,
 			@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
+			HttpServletRequest httpServletRequest,
 			Model model) {
 		House house = houseRepository.getReferenceById(id);
 		User user = userDetailsImpl.getUser();
 
-		// 予約日時を取得する
-		LocalDate reservationDate = reservationInputForm.getReservationDate(); // 修正: getreservationDate() -> getReservationDate()
-		LocalTime reservationTime = reservationInputForm.getReservationTime(); // 修正: getreservationTime() -> getReservationTime()
+		// 予約日を取得する
+		LocalDate reservationDate = reservationInputForm.getReservationDate();
+
+		// 予約時刻を取得する
+		LocalTime reservationTime = reservationInputForm.getReservationTime();
 
 		// houseオブジェクトのgetPriceメソッドが正しく呼び出されているか確認
 		Integer pricePerPerson = house.getPrice();
@@ -112,16 +120,30 @@ public class ReservationController {
 				reservationInputForm.getNumberOfPeople(),
 				amount);
 
+		String sessionId = stripeService.createStripeSession(house.getName(), reservationRegisterForm,
+				httpServletRequest);
+
 		model.addAttribute("house", house);
 		model.addAttribute("reservationRegisterForm", reservationRegisterForm);
+		model.addAttribute("sessionId", sessionId);
 
 		return "reservations/confirm";
 	}
 
+	/*
 	@PostMapping("/houses/{id}/reservations/create")
 	public String create(@ModelAttribute ReservationRegisterForm reservationRegisterForm) {
 		reservationService.create(reservationRegisterForm);
-
+	
 		return "redirect:/reservations?reserved";
+	}
+	 */
+
+	@PostMapping
+	public String reserve(@ModelAttribute("reservationInputForm") ReservationInputForm reservationInputForm,
+			Model model) {
+		// 予約処理の実装
+		model.addAttribute("reserved", true); // 予約完了メッセージを表示するために追加
+		return "redirect:/reservations";
 	}
 }

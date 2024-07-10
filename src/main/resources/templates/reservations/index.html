@@ -32,9 +32,9 @@
 
 						<form th:action="@{/reservations}" th:object="${reservationInputForm}" method="post">
 							<div class="mb-3">
-								<label for="checkinDate" class="form-label">予約日時</label>
-								<input type="text" id="checkinDate" th:field="*{checkinDateString}" class="form-control"
-									placeholder="予約日時を選択してください">
+								<label for="reservationDateTime" class="form-label">予約日時</label>
+								<input type="text" id="reservationDateTime" th:field="*{reservationDateTime}"
+									class="form-control" placeholder="予約日時を選択してください">
 							</div>
 							<div class="mb-3">
 								<label for="numberOfPeople" class="form-label">予約人数</label>
@@ -56,12 +56,13 @@
 							<tbody>
 								<tr th:each="reservation : ${reservationPage}">
 									<td>
-										<a th:href="@{/houses/__${reservation.getHouse().getId()}__}"
-											th:text="${reservation.getHouse().getName()}"></a>
+										<a th:href="@{/houses/__${reservation.house.id}__}"
+											th:text="${reservation.house.name}"></a>
 									</td>
-									<td th:text="${reservation.getCheckinDate()}"></td>
-									<td th:text="${reservation.getNumberOfPeople + '名'}"></td>
-									<td th:text="${#numbers.formatInteger(reservation.getAmount(), 1, 'COMMA') + '円'}">
+									<td th:text="${#temporals.format(reservation.getReservationDate(), 'yyyy-MM-dd HH:mm')}">
+									</td>
+									<td th:text="${reservation.numberOfPeople + '名'}"></td>
+									<td th:text="${#numbers.formatInteger(reservation.amount, 1, 'COMMA') + '円'}">
 									</td>
 								</tr>
 							</tbody>
@@ -72,23 +73,23 @@
 							<nav aria-label="予約一覧ページ">
 								<ul class="pagination">
 									<li class="page-item">
-										<span th:if="${reservationPage.isFirst()}" class="page-link disabled">前</span>
-										<a th:unless="${reservationPage.isFirst()}"
-											th:href="@{/reservations(page=${reservationPage.getNumber() - 1})}"
+										<span th:if="${reservationPage.first}" class="page-link disabled">前</span>
+										<a th:unless="${reservationPage.first}"
+											th:href="@{/reservations(page=${reservationPage.number - 1})}"
 											class="page-link samuraitravel-page-link">前</a>
 									</li>
-									<li th:each="i : ${#numbers.sequence(0, reservationPage.getTotalPages() - 1)}"
+									<li th:each="i : ${#numbers.sequence(0, reservationPage.totalPages - 1)}"
 										class="page-item">
-										<span th:if="${i == reservationPage.getNumber()}"
+										<span th:if="${i == reservationPage.number}"
 											class="page-link active samuraitravel-active" th:text="${i + 1}"></span>
-										<a th:unless="${i == reservationPage.getNumber()}"
+										<a th:unless="${i == reservationPage.number}"
 											th:href="@{/reservations(page=${i})}"
 											class="page-link samuraitravel-page-link" th:text="${i + 1}"></a>
 									</li>
 									<li class="page-item">
-										<span th:if="${reservationPage.isLast()}" class="page-link disabled">次</span>
-										<a th:unless="${reservationPage.isLast()}"
-											th:href="@{/reservations(page=${reservationPage.getNumber() + 1})}"
+										<span th:if="${reservationPage.last}" class="page-link disabled">次</span>
+										<a th:unless="${reservationPage.last}"
+											th:href="@{/reservations(page=${reservationPage.number + 1})}"
 											class="page-link samuraitravel-page-link">次</a>
 									</li>
 								</ul>
@@ -111,8 +112,9 @@
 			let maxDate = new Date();
 			maxDate.setMonth(maxDate.getMonth() + 3); // 最大日付を現在から3ヶ月後に設定
 
-			flatpickr('#checkinDate', {
+			flatpickr('#reservationDateTime', {
 				enableTime: true, // 時間を有効にする
+				enableSeconds: false, // 秒の選択を無効にする
 				dateFormat: "Y-m-d H:i", // 日付フォーマットを指定
 				locale: 'ja',
 				minDate: 'today',

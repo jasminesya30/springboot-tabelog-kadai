@@ -675,7 +675,7 @@ INSERT IGNORE INTO reservations
    id,
    house_id,
    user_id,
-   checkin_date,
+   reservation_date,
    number_of_people,
    amount
 )
@@ -693,7 +693,7 @@ INSERT IGNORE INTO reservations
    id,
    house_id,
    user_id,
-   checkin_date,
+   reservation_date,
    number_of_people,
    amount
 )
@@ -711,7 +711,7 @@ INSERT IGNORE INTO reservations
    id,
    house_id,
    user_id,
-   checkin_date,
+   reservation_date,
    number_of_people,
    amount
 )
