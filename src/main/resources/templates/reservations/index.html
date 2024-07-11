@@ -59,7 +59,8 @@
 										<a th:href="@{/houses/__${reservation.house.id}__}"
 											th:text="${reservation.house.name}"></a>
 									</td>
-									<td th:text="${#temporals.format(reservation.getReservationDate(), 'yyyy-MM-dd HH:mm')}">
+									<td
+										th:text="${#temporals.format(reservation.getReservationDate(), 'yyyy-MM-dd HH:mm')}">
 									</td>
 									<td th:text="${reservation.numberOfPeople + '名'}"></td>
 									<td th:text="${#numbers.formatInteger(reservation.amount, 1, 'COMMA') + '円'}">
@@ -120,7 +121,9 @@
 				minDate: 'today',
 				maxDate: maxDate,
 				time_24hr: true, // 24時間制を使用
-				minuteIncrement: 30 // 30分単位で選択可能にする
+				minuteIncrement: 30, // 30分単位で選択可能にする
+				minTime: "10:00", // 最小時間
+				maxTime: "22:00", // 最大時間
 			});
 		});
 	</script>

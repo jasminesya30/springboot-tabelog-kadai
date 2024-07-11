@@ -9,5 +9,7 @@ flatpickr('#reservationDateTime', {
 	locale: 'ja',
 	minuteIncrement: 30, // 分単位でのインクリメントを設定する
 	minDate: 'today',
-	maxDate: maxDate
+	maxDate: maxDate,
+	minTime: "10:00", // 最小時間
+    maxTime: "22:00", // 最大時間
 });
