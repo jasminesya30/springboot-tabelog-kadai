@@ -30,20 +30,6 @@
 							予約が完了しました。
 						</div>
 
-						<form th:action="@{/reservations}" th:object="${reservationInputForm}" method="post">
-							<div class="mb-3">
-								<label for="reservationDateTime" class="form-label">予約日時</label>
-								<input type="text" id="reservationDateTime" th:field="*{reservationDateTime}"
-									class="form-control" placeholder="予約日時を選択してください">
-							</div>
-							<div class="mb-3">
-								<label for="numberOfPeople" class="form-label">予約人数</label>
-								<input type="number" id="numberOfPeople" th:field="*{numberOfPeople}"
-									class="form-control" placeholder="予約人数を入力してください">
-							</div>
-							<button type="submit" class="btn btn-primary">予約する</button>
-						</form>
-
 						<table class="table mt-5">
 							<thead>
 								<tr>
@@ -113,6 +99,19 @@
 			let maxDate = new Date();
 			maxDate.setMonth(maxDate.getMonth() + 3); // 最大日付を現在から3ヶ月後に設定
 
+			let now = new Date();
+			let currentMinutes = now.getMinutes();
+			let nextAvailableTime = new Date(now);
+
+			if (currentMinutes < 30) {
+				nextAvailableTime.setMinutes(30);
+			} else {
+				nextAvailableTime.setHours(nextAvailableTime.getHours() + 1);
+				nextAvailableTime.setMinutes(0);
+			}
+
+			let nowFormatted = nextAvailableTime.getHours().toString().padStart(2, '0') + ':' + nextAvailableTime.getMinutes().toString().padStart(2, '0');
+
 			flatpickr('#reservationDateTime', {
 				enableTime: true, // 時間を有効にする
 				enableSeconds: false, // 秒の選択を無効にする
@@ -122,8 +121,20 @@
 				maxDate: maxDate,
 				time_24hr: true, // 24時間制を使用
 				minuteIncrement: 30, // 30分単位で選択可能にする
-				minTime: "10:00", // 最小時間
-				maxTime: "22:00", // 最大時間
+				minTime: now.getHours() + ":" + now.getMinutes(), // 現在時刻をminTimeに設定
+				maxTime: "21:00", // 最大時間
+				onChange: function (selectedDates, dateStr, instance) {
+					if (selectedDates.length > 0) {
+						let selectedDate = selectedDates[0];
+						if (selectedDate.toDateString() === now.toDateString()) {
+							// 今日の日付が選択された場合は、現在の時刻以降を選択可能にする
+							instance.set('minTime', now.getHours() + ":" + now.getMinutes());
+						} else {
+							// 他の日付が選択された場合は、10:00以降を選択可能にする
+							instance.set('minTime', "10:00");
+						}
+					}
+				}
 			});
 		});
 	</script>
