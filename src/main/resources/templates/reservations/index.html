@@ -34,7 +34,8 @@
 							<thead>
 								<tr>
 									<th scope="col">店舗名</th>
-									<th scope="col">予約日時</th>
+									<th scope="col">予約日</th>
+									<th scope="col">予約時刻</th>
 									<th scope="col">予約人数</th>
 									<th scope="col">料金目安</th>
 								</tr>
@@ -46,8 +47,9 @@
 											th:text="${reservation.house.name}"></a>
 									</td>
 									<td
-										th:text="${#temporals.format(reservation.getReservationDate(), 'yyyy-MM-dd HH:mm')}">
+										th:text="${#temporals.format(reservation.getReservationDate(), 'yyyy-MM-dd')}">
 									</td>
+									<td th:text="${#temporals.format(reservation.getReservationTime(), 'HH:mm')}"></td>
 									<td th:text="${reservation.numberOfPeople + '名'}"></td>
 									<td th:text="${#numbers.formatInteger(reservation.amount, 1, 'COMMA') + '円'}">
 									</td>
