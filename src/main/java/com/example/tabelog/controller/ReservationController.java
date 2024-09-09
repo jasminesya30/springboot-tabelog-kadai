@@ -2,6 +2,7 @@ package com.example.tabelog.controller;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.tabelog.entity.House;
@@ -49,8 +51,14 @@ public class ReservationController {
 
 	@GetMapping("/reservations")
 	public String index(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
-			@PageableDefault(page = 0, size = 10, sort = "id", direction = Direction.ASC) Pageable pageable,
+			@PageableDefault(page = 0, size = 10, sort = "id", direction = Direction.ASC) Pageable pageable, @RequestParam(required = false) String reserved,
 			Model model) {
+		if (reserved != null) { // 決済が終わってreservations?reserved で呼び出された場合
+			try {
+				TimeUnit.MILLISECONDS.sleep(500); // 予約情報がDBに登録されるまで処理を待つ
+			} catch (Exception ignore) {
+			}
+		}
 		User user = userDetailsImpl.getUser();
 		Page<Reservation> reservationPage = reservationRepository.findByUserOrderByCreatedAtDesc(user, pageable);
 		model.addAttribute("user", user);

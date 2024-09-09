@@ -14,6 +14,8 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 
 	let nowFormatted = nextAvailableTime.getHours().toString().padStart(2, '0') + ':' + nextAvailableTime.getMinutes().toString().padStart(2, '0');
+	let minTimeFormatted = (now.getHours() < 10) ? "10:00" : nowFormatted;
+	let disableToday = now.getHours() >= 21;
 
 	flatpickr('#reservationDateTime', {
 		enableTime: true, // 時間の選択を有効にする
@@ -24,18 +26,31 @@ document.addEventListener('DOMContentLoaded', function() {
 		minuteIncrement: 30, // 分単位でのインクリメントを設定する
 		minDate: 'today',
 		maxDate: maxDate,
-		minTime: nowFormatted, // 最小時間
+		minTime: "10:00", // 初期最小時間を設定
 		maxTime: "21:00", // 最大時間
+		disable: disableToday ? [new Date()] : [], // 今日が無効化されるかどうかを設定
+		onReady: function(selectedDates, dateStr, instance) {
+			// 初期表示時に空欄に近い状態にするために、デフォルトの時刻を設定しない
+			instance.setDate(null, false); // 初期状態をクリアする
+		},
 		onChange: function(selectedDates, dateStr, instance) {
 			if (selectedDates.length > 0) {
 				let selectedDate = selectedDates[0];
-				if (selectedDate.toDateString() === now.toDateString()) {
-					// 今日の日付が選択された場合は、現在の時刻以降を選択可能にする
-					instance.set('minTime', nowFormatted);
-				} else {
-					// 他の日付が選択された場合は、10:00以降を選択可能にする
-					instance.set('minTime', "10:00");
+				let isToday = selectedDate.toDateString() === now.toDateString();
+				let minTime = isToday ? minTimeFormatted : "10:00";
+
+				instance.set('minTime', minTime);
+				if (isToday && selectedDate < nextAvailableTime) {
+					instance.setDate(nextAvailableTime, true);
 				}
+			}
+		},
+		onOpen: function(selectedDates, dateStr, instance) {
+			let selectedDate = instance.selectedDates[0];
+			if (selectedDate) {
+				let isToday = selectedDate.toDateString() === now.toDateString();
+				let minTime = isToday ? minTimeFormatted : "10:00";
+				instance.set('minTime', minTime);
 			}
 		}
 	});

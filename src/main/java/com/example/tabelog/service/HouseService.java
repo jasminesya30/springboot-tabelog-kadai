@@ -4,8 +4,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,6 +20,7 @@ import com.example.tabelog.repository.HouseRepository;
 
 @Service
 public class HouseService {
+	private static final Logger logger = LoggerFactory.getLogger(HouseService.class);
 	private final HouseRepository houseRepository;
 
 	public HouseService(HouseRepository houseRepository) {
@@ -28,10 +32,10 @@ public class HouseService {
 		House house = new House();
 		MultipartFile imageFile = houseRegisterForm.getImageFile();
 
-		if (!imageFile.isEmpty()) {
+		if (imageFile != null && !imageFile.isEmpty()) {
 			String imageName = imageFile.getOriginalFilename();
 			String hashedImageName = generateNewFileName(imageName);
-			Path filePath = Paths.get("src/main/resources/static/storage/" + hashedImageName);
+			Path filePath = Paths.get("storage/" + hashedImageName);
 			copyImageFile(imageFile, filePath);
 			house.setImageName(hashedImageName);
 		}
@@ -49,13 +53,14 @@ public class HouseService {
 
 	@Transactional
 	public void update(HouseEditForm houseEditForm) {
-		House house = houseRepository.getReferenceById(houseEditForm.getId());
+		House house = houseRepository.findById(houseEditForm.getId())
+				.orElseThrow(() -> new RuntimeException("House not found"));
 		MultipartFile imageFile = houseEditForm.getImageFile();
 
-		if (!imageFile.isEmpty()) {
+		if (imageFile != null && !imageFile.isEmpty()) {
 			String imageName = imageFile.getOriginalFilename();
 			String hashedImageName = generateNewFileName(imageName);
-			Path filePath = Paths.get("src/main/resources/static/storage/" + hashedImageName);
+			Path filePath = Paths.get("storage/" + hashedImageName);
 			copyImageFile(imageFile, filePath);
 			house.setImageName(hashedImageName);
 		}
@@ -73,20 +78,27 @@ public class HouseService {
 
 	// UUIDを使って生成したファイル名を返す
 	public String generateNewFileName(String fileName) {
-		String[] fileNames = fileName.split("\\.");
-		for (int i = 0; i < fileNames.length - 1; i++) {
-			fileNames[i] = UUID.randomUUID().toString();
+		String extension = "";
+		int dotIndex = fileName.lastIndexOf(".");
+		if (dotIndex > 0) {
+			extension = fileName.substring(dotIndex); // 拡張子を保持
 		}
-		String hashedFileName = String.join(".", fileNames);
+		String hashedFileName = UUID.randomUUID().toString() + extension;
 		return hashedFileName;
 	}
 
 	// 画像ファイルを指定したファイルにコピーする
 	public void copyImageFile(MultipartFile imageFile, Path filePath) {
 		try {
-			Files.copy(imageFile.getInputStream(), filePath);
-		} catch (IOException e) {
-			e.printStackTrace();
+			Files.copy(imageFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+		} catch (IOException | SecurityException e) {
+			// ログにエラーメッセージを出力する
+			logger.error("Failed to store file: {}", e.getMessage(), e);
+
 		}
+	}
+
+	public House findById(Integer id) {
+		return houseRepository.findById(id).orElse(null);
 	}
 }

@@ -1,5 +1,7 @@
 package com.example.tabelog.service;
 
+import java.util.Optional;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +23,10 @@ public class UserService {
 		this.userRepository = userRepository;
 		this.roleRepository = roleRepository;
 		this.passwordEncoder = passwordEncoder;
+	}
+
+	public Optional<User> findById(Integer id) {
+		return userRepository.findById(id);
 	}
 
 	@Transactional
@@ -78,4 +84,10 @@ public class UserService {
 		User currentUser = userRepository.getReferenceById(userEditForm.getId());
 		return !userEditForm.getEmail().equals(currentUser.getEmail());
 	}
+
+	// ユーザー名でユーザーを検索する
+	public User findByUsername(String username) {
+		return userRepository.findByUsername(username);
+	}
+
 }

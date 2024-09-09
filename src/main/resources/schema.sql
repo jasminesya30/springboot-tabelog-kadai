@@ -56,3 +56,25 @@ CREATE TABLE IF NOT EXISTS reservations
    FOREIGN KEY (house_id) REFERENCES houses (id),
    FOREIGN KEY (user_id) REFERENCES users (id)
 );
+CREATE TABLE IF NOT EXISTS reviews
+(
+   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+   user_id INT NOT NULL,
+   house_id INT NOT NULL,
+   content TEXT NOT NULL,
+   rating INT NOT NULL,
+   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+   FOREIGN KEY (user_id) REFERENCES users (id),
+   FOREIGN KEY (house_id) REFERENCES houses (id)
+);
+CREATE TABLE IF NOT EXISTS favorites
+(
+   id INT AUTO_INCREMENT PRIMARY KEY,
+   house_id INT NOT NULL,
+   image_name VARCHAR (255),
+   name VARCHAR (50) NOT NULL,
+   description VARCHAR (255) NOT NULL,
+   price INT NOT NULL,
+   postal_code VARCHAR (50) NOT NULL,
+   address VARCHAR (255) NOT NULL
+);

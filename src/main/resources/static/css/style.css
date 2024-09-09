@@ -52,11 +52,20 @@ footer {
 
 .samuraitravel-btn {
 	background-color: #5196a6 !important;
+	color: #fff !important;
+	border: none;
+	padding: 10px 20px;
+	cursor: pointer;
 	transition: 0.1s;
 }
 
 .samuraitravel-btn:hover {
+	background-color: #407784 !important;
+	/* ホバー時の背景色 */
 	opacity: 0.8;
+	/* ホバー時の透明度 */
+	color: #fff !important;
+	/* ホバー時の文字色を白に設定 */
 }
 
 .samuraitravel-page-link {
@@ -73,8 +82,8 @@ footer {
 }
 
 .samuraitravel-pre-wrap {
-	/* 改行文字で行を折り返す */
 	white-space: pre-wrap;
+	/* 改行文字で行を折り返す */
 }
 
 .samuraitravel-link-danger {
@@ -130,4 +139,170 @@ footer {
 	.samuraitravel-container {
 		max-width: 1200px;
 	}
+}
+
+/* styles.css */
+.star {
+	color: yellow;
+	/* 星の色を黄色にする */
+	font-size: 1.5em;
+	/* 星のサイズを調整 */
+}
+
+.review-title {
+	text-align: center;
+	/* タイトルを中央揃えにします */
+	margin-top: 50px;
+	/* 上に50pxの空間を追加 */
+}
+
+.review-box {
+	border: 2px solid #ccc;
+	/* 線の太さと色 */
+	padding: 15px;
+	/* 内側の余白 */
+	margin: 15px 0;
+	/* 外側の余白 */
+	border-radius: 8px;
+	/* 角を丸くする場合 */
+	background-color: #f9f9f9;
+	/* 背景色 */
+}
+
+.review-box .rating {
+	font-size: 1.2em;
+	/* 星のサイズ */
+	color: #f39c12;
+	/* 星の色 */
+	margin-bottom: 10px;
+	/* 評価とコメントの間隔 */
+}
+
+.review-box .review-date {
+	color: #777;
+	/* 日付の色 */
+	font-size: 0.9em;
+	/* 日付のフォントサイズ */
+	margin-top: 10px;
+	/* コメントと日付の間隔 */
+}
+
+.samuraitravel-btn-submit {
+	background-color: #5196a6 !important;
+	/* 他のボタンと同じ背景色 */
+	color: #fff !important;
+	/* テキストカラーを白に設定 */
+	border: none;
+	padding: 10px 20px;
+	cursor: pointer;
+	transition: 0.1s;
+}
+
+.samuraitravel-btn-submit:hover {
+	background-color: #407784 !important;
+	/* ホバー時の背景色 */
+	opacity: 0.8 !important;
+	/* ホバー時の透明度 */
+	color: #fff !important;
+	/* ホバー時の文字色を白に設定 */
+}
+
+.review-item {
+	border: 1px solid #ddd;
+	/* 薄いグレーの枠線 */
+	border-radius: 4px;
+	/* 角を丸くする */
+	padding: 10px;
+	/* 内側の余白 */
+	margin-bottom: 10px;
+	/* 下側の余白 */
+	background-color: #f9f9f9;
+	/* 背景色（任意） */
+}
+
+.review-item p {
+	margin: 0 0 10px 0;
+	/* 各パラグラフの下に余白 */
+}
+
+.review-item .star-rating {
+	font-size: 1.2em;
+	/* 星のサイズを大きくする */
+}
+
+.favorites-container {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.favorite-item {
+	display: flex;
+	align-items: center;
+	border: 1px solid #ccc;
+	border-radius: 8px;
+	padding: 16px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.favorite-image {
+	width: 150px;
+	height: auto;
+	border-radius: 8px;
+	margin-right: 16px;
+}
+
+.favorite-details {
+	flex: 1;
+}
+
+.favorite-name {
+	font-size: 1.5em;
+	text-decoration: none;
+	color: #333;
+}
+
+.favorite-name:hover {
+	text-decoration: underline;
+}
+
+.favorite-description,
+.favorite-address {
+	margin: 8px 0;
+	color: #555;
+}
+
+.pagination {
+	margin: 20px 0;
+}
+
+.favorite {
+	font-size: 2rem;
+	color: #ccc;
+	cursor: pointer;
+}
+
+.favorite.active {
+	color: red;
+}
+
+.favorite {
+	top: 113px;
+	/* 上からの距離 */
+	font-size: 2rem;
+	color: #ccc;
+	/* デフォルトの色 */
+	cursor: pointer;
+	margin-right: 10px;
+	/* 画像右端からの距離 */
+}
+
+.image-container {
+	position: relative;
+	width: 100%;
+	display: flex;
+	justify-content: flex-end;
+	/* アイコンを右端に配置 */
+	align-items: flex-start;
+	/* アイコンを画像の上端に配置 */
 }
