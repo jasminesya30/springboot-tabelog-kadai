@@ -5,7 +5,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.example.tabelog.entity.Favorite;
 import com.example.tabelog.entity.House;
 import com.example.tabelog.entity.User;
+import com.example.tabelog.security.UserDetailsImpl;
 import com.example.tabelog.service.FavoriteService;
 import com.example.tabelog.service.HouseService;
 import com.example.tabelog.service.UserService;
@@ -75,13 +78,34 @@ public class FavoriteController {
 	}
 
 	@GetMapping
-	public String getFavorites(Principal principal, Model model) {
-		String username = principal.getName();
-		User user = userService.findByUsername(username);
-		System.out.println("ユーザーネーム"+user);
-		List<Favorite> favorites = favoriteService.getFavoritesByUser(user);
-		model.addAttribute("favorites", favorites);
-		return "favorites";
+	public String getFavorites(Model model) {
+		User currentUser = getCurrentUser();
+		if (currentUser == null) {
+			// ユーザーがログインしていない場合の処理
+			return "redirect:/login"; // ログインページにリダイレクト
+		}
+
+		try {
+			List<Favorite> favorites = favoriteService.getFavoritesByUser(currentUser);
+			model.addAttribute("favorites", favorites);
+			return "favorites";
+		} catch (IllegalArgumentException e) {
+			// ユーザーがnullの場合の処理
+			model.addAttribute("errorMessage", "Unexpected error occurred: " + e.getMessage());
+			return "errorPage"; // エラーページの表示
+		}
+	}
+
+	private User getCurrentUser() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated()) {
+			return null;
+		}
+		Object principal = authentication.getPrincipal();
+		if (principal instanceof UserDetailsImpl) {
+			return ((UserDetailsImpl) principal).getUser();
+		}
+		return null;
 	}
 
 	@PostMapping("/houses/{id}/favorites/add")

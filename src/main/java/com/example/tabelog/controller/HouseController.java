@@ -99,15 +99,35 @@ public class HouseController {
 	@PostMapping("/{id}/reviews")
 	public String addReview(@PathVariable(name = "id") Integer id,
 			@ModelAttribute Review review,
-			@RequestParam("userId") Integer userId) {
-		House house = houseRepository.findById(id).orElseThrow(() -> new RuntimeException("House not found"));
-		User user = userService.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+			@RequestParam(required = false) Integer userId) {
+		try {
+			// House を取得
+			House house = houseRepository.findById(id)
+					.orElseThrow(() -> new RuntimeException("House not found"));
 
-		review.setHouse(house);
-		review.setUser(user);
-		review.setCreatedAt(LocalDateTime.now());
-		reviewService.saveReview(userId, id, review);
-		return "redirect:/houses/" + id;
+			// userId が指定されていない場合のデフォルトユーザーIDを設定
+			if (userId == null) {
+				userId = 1; // デフォルトユーザーID
+			}
+
+			// User を取得
+			User user = userService.findById(userId)
+					.orElseThrow(() -> new RuntimeException("User not found"));
+
+			// Review を設定
+			review.setHouse(house);
+			review.setUser(user);
+			review.setCreatedAt(LocalDateTime.now());
+
+			// Review を保存
+			reviewService.saveReview(userId, id, review);
+
+			return "redirect:/houses/" + id;
+		} catch (RuntimeException e) {
+			// エラーハンドリング、適宜ログを出力したり、エラーページへ遷移したりする処理
+			e.printStackTrace(); // エラーメッセージをコンソールに出力（開発中のみ）
+			return "error"; // エラーページにリダイレクト
+		}
 	}
 
 	@PostMapping("/{houseId}/addReview")

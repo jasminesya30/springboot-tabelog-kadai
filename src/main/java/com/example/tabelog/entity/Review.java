@@ -17,7 +17,7 @@ import jakarta.persistence.Table;
 public class Review {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
 	@ManyToOne
@@ -39,7 +39,10 @@ public class Review {
 
 	@PrePersist
 	protected void onCreate() {
-		createdAt = LocalDateTime.now();
+		if (createdAt == null) {
+			createdAt = LocalDateTime.now();
+			System.out.println("Setting createdAt in onCreate: " + createdAt); // デバッグログ追加
+		}
 	}
 
 	// Getters and setters
@@ -89,6 +92,7 @@ public class Review {
 
 	public void setCreatedAt(LocalDateTime createdAt) {
 		this.createdAt = createdAt;
+
 	}
 
 }

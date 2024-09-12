@@ -48,6 +48,9 @@ public class ReviewService {
 		review.setUser(user);
 		review.setHouse(house);
 		review.setCreatedAt(LocalDateTime.now());
+
+		System.out.println("Review created at: " + review.getCreatedAt()); // デバッグログ
+
 		return reviewRepository.save(review);
 	}
 

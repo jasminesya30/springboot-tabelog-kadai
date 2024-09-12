@@ -55,46 +55,60 @@
 							&#9825;
 						</div>
 
-
 						<script>
-							function toggleFavorite(element) {
-								const houseId = element.getAttribute('data-house-id');
-								const isFavorite = element.classList.contains('active');
+							document.addEventListener("DOMContentLoaded", function () {
+								function toggleFavorite(element) {
+									const houseId = element.getAttribute('data-house-id');
+									const isFavorite = element.classList.contains('active');
 
-								if (!isFavorite) {
-									// お気に入りに追加
-									fetch(`/houses/${houseId}/favorites/add`, {
-										method: 'POST',
-										headers: {
-											'Content-Type': 'application/json',
-											'X-CSRF-TOKEN': document.querySelector('meta[name="_csrf"]').getAttribute('content')
-										},
-										body: JSON.stringify({houseId: houseId})
-									})
-										.then(response => {
-											if (response.ok) {
-												element.classList.add('active');
-											}
-										});
-								} else {
-									// お気に入りから削除
-									fetch(`/houses/${houseId}/favorites/delete`, {
-										method: 'POST',
-										headers: {
-											'Content-Type': 'application/json',
-											'X-CSRF-TOKEN': document.querySelector('meta[name="_csrf"]').getAttribute('content')
-										},
-										body: JSON.stringify({houseId: houseId})
-									})
-										.then(response => {
-											if (response.ok) {
-												element.classList.remove('active');
-											}
-										});
+									if (!isFavorite) {
+										// お気に入りに追加
+										fetch(`/houses/${houseId}/favorites/add`, {
+											method: 'POST',
+											headers: {
+												'Content-Type': 'application/json',
+												'X-CSRF-TOKEN': document.querySelector('meta[name="_csrf"]').getAttribute('content')
+											},
+											body: JSON.stringify({houseId: houseId})
+										})
+											.then(response => {
+												if (response.ok) {
+													element.classList.add('active');
+												}
+											});
+									} else {
+										// お気に入りから削除
+										fetch(`/houses/${houseId}/favorites/delete`, {
+											method: 'POST',
+											headers: {
+												'Content-Type': 'application/json',
+												'X-CSRF-TOKEN': document.querySelector('meta[name="_csrf"]').getAttribute('content')
+											},
+											body: JSON.stringify({houseId: houseId})
+										})
+											.then(response => {
+												if (response.ok) {
+													element.classList.remove('active');
+												}
+											});
+									}
 								}
-							}
+
+								document.querySelectorAll('.favorite').forEach(function (element) {
+									element.addEventListener('click', function () {
+										toggleFavorite(this);
+									});
+								});
+							});
 						</script>
 
+						<!-- メッセージ表示 -->
+						<div th:if="${message}" class="alert alert-success">
+							<p th:text="${message}"></p>
+						</div>
+						<div th:if="${message}">
+							<p th:text="${message}"></p>
+						</div>
 
 						<!-- 店舗情報 -->
 						<h1 class="mb-4 text-center" th:text="${house.getName()}"></h1>
@@ -295,34 +309,6 @@
 	<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
 	<script th:src="@{/js/flatpickr.js}"></script>
 
-	<!-- お気に入り登録 -->
-	<script>
-		document.addEventListener("DOMContentLoaded", function () {
-			document.querySelectorAll('.favorite').forEach(function (element) {
-				element.addEventListener('click', function () {
-					const houseId = this.getAttribute('data-house-id');
-					fetch(`/favorites/${houseId}`, {
-						method: 'POST',
-						headers: {
-							'Content-Type': 'application/json',
-							'X-CSRF-TOKEN': document.querySelector('meta[name="_csrf"]').getAttribute('content')
-						}
-					})
-						.then(response => response.json())
-						.then(data => {
-							if (data.success) {
-								this.classList.toggle('active');
-							} else {
-								alert('お気に入りの登録/解除に失敗しました。');
-							}
-						})
-						.catch(error => {
-							console.error('Error:', error);
-						});
-				});
-			});
-		});
-	</script>
 
 </body>
 
