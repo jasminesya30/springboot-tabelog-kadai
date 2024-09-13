@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>店舗詳細</title>
+	<th:fragment="meta">
+		</th:fragment>
+		<th:fragment="styles">
+			</th:fragment>
+</head>
+
+<body>
+	<th:fragment="header">
+		</th:fragment>
+
+		<div class="container mt-5">
+			<h2 th:text="${house.name}"></h2>
+			<p th:text="${house.address}"></p>
+
+			<form th:action="@{/favorites/add}" method="post">
+				<input type="hidden" name="houseId" th:value="${house.id}">
+				<button type="submit" class="btn btn-primary">お気に入りに追加</button>
+			</form>
+		</div>
+
+		<th:fragment="footer">
+			</th:fragment>
+			<th:fragment="scripts">
+				</th:fragment>
+</body>
+
+</html>
