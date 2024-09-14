@@ -81,3 +81,13 @@ CREATE TABLE IF NOT EXISTS favorites
    FOREIGN KEY (user_id) REFERENCES users (id),
    FOREIGN KEY (house_id) REFERENCES houses (id)
 );
+CREATE TABLE IF NOT EXISTS subscriptions
+(
+   id BIGINT AUTO_INCREMENT PRIMARY KEY,
+   subscription_id VARCHAR (255),
+   customer_id VARCHAR (255),
+   price_id VARCHAR (255),
+   user_id INT,
+   status VARCHAR (255),
+   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);

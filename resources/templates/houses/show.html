@@ -55,7 +55,7 @@
 						</nav>
 
 						<!-- お気に入り -->
-						<div sec:authorize="isAuthenticated()" class="favorite" data-house-id="${houseId}">
+						<div sec:authorize="isAuthenticated()" class="favorite" data-th-data-house-id="${houseId}">
 							&#9825;
 						</div>
 
@@ -98,7 +98,7 @@
 
 								// お気に入り状態を変更
 								const action = isFavorite ? 'delete' : 'add';
-								fetch(`/houses/${houseId}/favorites/${action}`, {
+								fetch(`/favorites/houses/${houseId}/favorites/${action}`, {
 									method: 'POST',
 									headers: {
 										'Content-Type': 'application/json',

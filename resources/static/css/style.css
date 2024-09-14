@@ -275,3 +275,22 @@ footer {
 	justify-content: flex-end;
 	align-items: flex-start;
 }
+
+.samuraitravel-btn,
+.samuraitravel-btn-submit,
+.samuraitravel-btn-danger {
+	border-radius: 4px;
+}
+
+/* フォーム内のボタンを中央に配置 */
+.center-form {
+	text-align: center;
+}
+
+/* ボタンのスタイル（オプション） */
+.samuraitravel-btn-submit {
+	display: inline-block;
+	/* ボタンをインライン要素として表示 */
+	margin-top: 50px;
+	/* 上に20pxのスペースを追加 */
+}
