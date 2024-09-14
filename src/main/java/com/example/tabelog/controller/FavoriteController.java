@@ -63,7 +63,9 @@ public class FavoriteController {
 				response.setMessage("ハウスが存在しません。");
 				return response;
 			}
-
+　　　　　　　　　　　　　　　　/* 2024/9/13椿原追記：user.getUsername()は、String型で取得される値です。
+			   toggleFavorite()メソッドの引数がInteger、Stringの2つがデータ型として設定していることを確認してください。	
+   			*/
 			boolean isFavoriteAdded = favoriteService.toggleFavorite(houseId, user.getUsername());
 
 			response.setSuccess(true);
