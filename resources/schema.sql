@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS houses
    name VARCHAR (50) NOT NULL,
    image_name VARCHAR (255),
    description VARCHAR (255) NOT NULL,
-   category_id INT NOT NULL,
+   category_id INT NULL,
    price INT NOT NULL,
    capacity INT NOT NULL,
    postal_code VARCHAR (50) NOT NULL,
