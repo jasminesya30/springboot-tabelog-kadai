@@ -70,7 +70,7 @@ public class FavoriteController {
 				return response;
 			}
 
-			boolean isFavoriteAdded = favoriteService.toggleFavorite(houseId, user.getUsername());
+			boolean isFavoriteAdded = favoriteService.toggleFavorite(houseId, user.getName());
 
 			response.setSuccess(true);
 			response.setMessage(isFavoriteAdded ? "お気に入りに追加しました。" : "既にお気に入りに追加されています。");

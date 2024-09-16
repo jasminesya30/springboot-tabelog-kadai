@@ -28,7 +28,7 @@ public class Favorite {
 	@JoinColumn(name = "house_id", nullable = false)
 	private House house;
 
-	@Column(name = "created_at", nullable = false, updatable = false)
+	@Column(name = "created_at", insertable = false, updatable = false)
 	private LocalDateTime createdAt;
 
 	// コンストラクタ

@@ -17,7 +17,7 @@ import jakarta.persistence.Table;
 public class Review {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
 	@ManyToOne
@@ -34,7 +34,7 @@ public class Review {
 	@Column(nullable = false)
 	private int rating;
 
-	@Column(name = "created_at", nullable = false, updatable = false)
+	@Column(name = "created_at", insertable = false, updatable = false)
 	private LocalDateTime createdAt;
 
 	@PrePersist

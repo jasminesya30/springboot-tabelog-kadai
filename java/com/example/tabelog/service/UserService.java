@@ -86,8 +86,8 @@ public class UserService {
 	}
 
 	// ユーザー名でユーザーを検索する
-	public User findByUsername(String username) {
-		return userRepository.findByUsername(username);
+	public User findByUsername(String name) {
+		return userRepository.findByName(name);
 	}
 
 }

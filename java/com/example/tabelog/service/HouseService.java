@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import java.util.UUID;
 
 import org.slf4j.Logger;
@@ -25,6 +26,10 @@ public class HouseService {
 
 	public HouseService(HouseRepository houseRepository) {
 		this.houseRepository = houseRepository;
+	}
+
+	public List<House> findByCategoryId(Integer id) {
+		return houseRepository.findByCategoryId(id);
 	}
 
 	@Transactional
@@ -100,5 +105,15 @@ public class HouseService {
 
 	public House findById(Integer id) {
 		return houseRepository.findById(id).orElse(null);
+	}
+
+	public List<House> getHousesByCategoryId(Integer categoryId) {
+		// TODO 自動生成されたメソッド・スタブ
+		return houseRepository.findByCategoryId(categoryId);
+	}
+
+	public List<House> findByCategoryId(Long id) {
+		// TODO 自動生成されたメソッド・スタブ
+		return null;
 	}
 }

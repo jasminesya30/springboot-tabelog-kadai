@@ -40,18 +40,26 @@ public class ReviewService {
 
 	@Transactional
 	public Review saveReview(Integer userId, Integer houseId, Review review) {
+		// 新しい Review インスタンスを作成
+		Review newReview = new Review();
+
+		// ユーザーとハウスを取得
 		User user = userRepository.findById(userId)
 				.orElseThrow(() -> new RuntimeException("User not found"));
 		House house = houseRepository.findById(houseId)
 				.orElseThrow(() -> new RuntimeException("House not found"));
 
-		review.setUser(user);
-		review.setHouse(house);
-		review.setCreatedAt(LocalDateTime.now());
+		// フィールドを設定
+		newReview.setUser(user);
+		newReview.setHouse(house);
+		newReview.setContent(review.getContent()); // もとのレビューから内容をコピー
+		newReview.setRating(review.getRating()); // もとのレビューから評価をコピー
+		newReview.setCreatedAt(LocalDateTime.now()); // 現在の日時を設定
 
-		System.out.println("Review created at: " + review.getCreatedAt()); // デバッグログ
+		System.out.println("Review created at: " + newReview.getCreatedAt()); // デバッグログ
 
-		return reviewRepository.save(review);
+		// 新しいレビューとして保存
+		return reviewRepository.save(newReview);
 	}
 
 	public List<Review> getReviewsByHouseId(Integer houseId) {

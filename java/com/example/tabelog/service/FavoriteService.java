@@ -25,8 +25,8 @@ public class FavoriteService {
 	@Autowired
 	private HouseRepository houseRepository;
 
-	public boolean toggleFavorite(Integer houseId, String userName) {
-		User user = userRepository.findByUsername(userName);
+	public boolean toggleFavorite(Integer houseId, String name) {
+		User user = userRepository.findByName(name);
 
 		// Houseエンティティを取得
 		House house = houseRepository.findById(houseId)

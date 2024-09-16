@@ -28,6 +28,9 @@ public class House {
 	@Column(name = "description")
 	private String description;
 
+	@Column(name = "category_id")
+	private Integer categoryId;
+
 	@Column(name = "price")
 	private Integer price;
 
