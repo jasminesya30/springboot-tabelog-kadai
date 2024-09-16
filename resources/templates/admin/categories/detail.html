@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+</head>
+
+<body>
+	<div class="categories-container">
+		<div th:each="house : ${houses}" class="category-item">
+			<img th:if="${house.imageName}" th:src="@{/storage/__${house.imageName}__}"
+				class="card-img-top samuraitravel-horizontal-card-image">
+			<img th:unless="${house.imageName}" th:src="@{/images/noImage.png}"
+				class="card-img-top samuraitravel-horizontal-card-image">
+			<div>
+				<a th:href="@{/houses/__${house.id}}" th:text="${house.name}" class="category-name"></a>
+				<p th:text="${house.description}" class="favorite-description"></p>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

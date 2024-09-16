@@ -5,6 +5,7 @@ INSERT IGNORE INTO houses
    name,
    image_name,
    description,
+   category_id,
    price,
    capacity,
    postal_code,
@@ -17,6 +18,7 @@ VALUES
    'To Go Samurai',
    'house01.jpg',
    'ソフトクリーム屋さん',
+   9,
    1000,
    70,
    '451-XXXX',
@@ -29,6 +31,7 @@ INSERT IGNORE INTO houses
    name,
    image_name,
    description,
+   category_id,
    price,
    capacity,
    postal_code,
@@ -41,6 +44,7 @@ VALUES
    '串専門 さむらい',
    'house02.jpg',
    'どて煮屋さん',
+   6,
    2000,
    50,
    '452-XXXX',
@@ -53,6 +57,7 @@ INSERT IGNORE INTO houses
    name,
    image_name,
    description,
+   category_id,
    price,
    capacity,
    postal_code,
@@ -65,6 +70,7 @@ VALUES
    'サムライサンド',
    'house03.jpg',
    'サンドイッチ屋さん',
+   9,
    1000,
    80,
    '453-XXXX',
@@ -77,6 +83,7 @@ INSERT IGNORE INTO houses
    name,
    image_name,
    description,
+   category_id,
    price,
    capacity,
    postal_code,
@@ -89,6 +96,7 @@ VALUES
    'コーヒーハウス SAMURAI',
    'house04.jpg',
    '小倉トーストのコーヒー屋さん',
+   1,
    2000,
    70,
    '454-XXXX',
@@ -101,6 +109,7 @@ INSERT IGNORE INTO houses
    name,
    image_name,
    description,
+   category_id,
    price,
    capacity,
    postal_code,
@@ -113,6 +122,7 @@ VALUES
    '天むす 侍屋',
    'house05.jpg',
    '天むす屋さん',
+   5,
    1000,
    50,
    '455-XXXX',
@@ -125,6 +135,7 @@ INSERT IGNORE INTO houses
    name,
    image_name,
    description,
+   category_id,
    price,
    capacity,
    postal_code,
@@ -137,6 +148,7 @@ VALUES
    'うなぎ家 侍や',
    'house06.jpg',
    'うなぎ・ひつまぶし屋さん',
+   7,
    3000,
    80,
    '456-XXXX',
@@ -149,6 +161,7 @@ INSERT IGNORE INTO houses
    name,
    image_name,
    description,
+   category_id,
    price,
    capacity,
    postal_code,
@@ -161,6 +174,7 @@ VALUES
    '味処 さむらい',
    'house07.jpg',
    '味噌カツ屋さん',
+   8,
    2000,
    70,
    '457-XXXX',
@@ -173,6 +187,7 @@ INSERT IGNORE INTO houses
    name,
    image_name,
    description,
+   category_id,
    price,
    capacity,
    postal_code,
@@ -185,6 +200,7 @@ VALUES
    'SAMURAI DINING',
    'house08.jpg',
    '創作料理店',
+   10,
    5000,
    50,
    '458-XXXX',
@@ -197,6 +213,7 @@ INSERT IGNORE INTO houses
    name,
    image_name,
    description,
+   category_id,
    price,
    capacity,
    postal_code,
@@ -209,6 +226,7 @@ VALUES
    '酉侍',
    'house09.jpg',
    '手羽先屋さん',
+   4,
    2000,
    80,
    '459-XXXX',
@@ -221,6 +239,7 @@ INSERT IGNORE INTO houses
    name,
    image_name,
    description,
+   category_id,
    price,
    capacity,
    postal_code,
@@ -233,6 +252,7 @@ VALUES
    'Samurai Terrace',
    'house10.jpg',
    '海鮮料理店',
+   10,
    3000,
    70,
    '460-XXXX',
@@ -245,6 +265,7 @@ INSERT IGNORE INTO houses
    name,
    image_name,
    description,
+   category_id,
    price,
    capacity,
    postal_code,
@@ -257,6 +278,7 @@ VALUES
    '侍きしめん',
    'house11.jpg',
    'きしめん屋さん',
+   2,
    1000,
    50,
    '461-XXXX',
@@ -269,6 +291,7 @@ INSERT IGNORE INTO houses
    name,
    image_name,
    description,
+   category_id,
    price,
    capacity,
    postal_code,
@@ -281,6 +304,7 @@ VALUES
    '喫茶 サムライ',
    'house12.jpg',
    '鉄板ナポリタンの喫茶店',
+   3,
    2000,
    80,
    '462-XXXX',
@@ -293,6 +317,7 @@ INSERT IGNORE INTO houses
    name,
    image_name,
    description,
+   category_id,
    price,
    capacity,
    postal_code,
@@ -305,6 +330,7 @@ VALUES
    'とんかつ 侍',
    'house13.jpg',
    '味噌カツ屋さん',
+   8,
    2000,
    70,
    '463-XXXX',
@@ -317,6 +343,7 @@ INSERT IGNORE INTO houses
    name,
    image_name,
    description,
+   category_id,
    price,
    capacity,
    postal_code,
@@ -329,6 +356,7 @@ VALUES
    '肉亭 さむらい',
    'house14.jpg',
    'やきにく屋さん',
+   10,
    5000,
    50,
    '464-XXXX',
@@ -431,9 +459,9 @@ VALUES
    '奈良県五條市西吉野町湯川X-XX-XX',
    '090-1234-5678',
    'yoshikatsu.samurai@example.com',
-   'password',
-   1,
-   false
+   '$2a$10$2JNjTwZBwo7fprL2X4sv.OEKqxnVtsVQvuXDkI8xVGix.U3W5B7CO',
+   2,
+   true
 );
 INSERT IGNORE INTO users
 (
@@ -828,4 +856,60 @@ VALUES
    5000,
    '464-XXXX',
    '愛知県名古屋市X-XX-XX'
+);
+-- categoriesテーブル
+INSERT IGNORE INTO categories
+(
+   id,
+   name
+)
+VALUES
+(
+   1,
+   '小倉トースト'
+),
+
+(
+   2,
+   'きしめん'
+),
+
+(
+   3,
+   '鉄板ナポリタン'
+),
+
+(
+   4,
+   '手羽先'
+),
+
+(
+   5,
+   '天むす'
+),
+
+(
+   6,
+   'どて煮'
+),
+
+(
+   7,
+   'ひつまぶし'
+),
+
+(
+   8,
+   '味噌カツ'
+),
+
+(
+   9,
+   'カフェ'
+),
+
+(
+   10,
+   'レストラン'
 );

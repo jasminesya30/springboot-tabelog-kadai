@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS houses
    name VARCHAR (50) NOT NULL,
    image_name VARCHAR (255),
    description VARCHAR (255) NOT NULL,
+   category_id INT NOT NULL,
    price INT NOT NULL,
    capacity INT NOT NULL,
    postal_code VARCHAR (50) NOT NULL,
@@ -63,7 +64,7 @@ CREATE TABLE IF NOT EXISTS reviews
    house_id INT NOT NULL,
    content TEXT NOT NULL,
    rating INT NOT NULL,
-   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
    FOREIGN KEY (user_id) REFERENCES users (id),
    FOREIGN KEY (house_id) REFERENCES houses (id)
 );
@@ -89,5 +90,10 @@ CREATE TABLE IF NOT EXISTS subscriptions
    price_id VARCHAR (255),
    user_id INT,
    status VARCHAR (255),
-   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE IF NOT EXISTS categories
+(
+   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+   name VARCHAR (50) NOT NULL
 );
