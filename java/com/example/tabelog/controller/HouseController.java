@@ -1,6 +1,5 @@
 package com.example.tabelog.controller;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -118,7 +117,7 @@ public class HouseController {
 			// Review を設定
 			review.setHouse(house);
 			review.setUser(user);
-			review.setCreatedAt(LocalDateTime.now());
+			// review.setCreatedAt(LocalDateTime.now());
 
 			// Review を保存
 			reviewService.saveReview(userId, id, review);
@@ -139,7 +138,7 @@ public class HouseController {
 		Review review = new Review();
 		review.setContent(content);
 		review.setRating(rating);
-		review.setCreatedAt(LocalDateTime.now());
+		// review.setCreatedAt(LocalDateTime.now());
 
 		House house = houseRepository.findById(houseId).orElseThrow(() -> new RuntimeException("House not found"));
 		User user = userService.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));

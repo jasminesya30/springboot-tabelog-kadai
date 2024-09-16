@@ -2,6 +2,7 @@ package com.example.tabelog.controller;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.data.domain.Page;
@@ -51,7 +52,8 @@ public class ReservationController {
 
 	@GetMapping("/reservations")
 	public String index(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
-			@PageableDefault(page = 0, size = 10, sort = "id", direction = Direction.ASC) Pageable pageable, @RequestParam(required = false) String reserved,
+			@PageableDefault(page = 0, size = 10, sort = "id", direction = Direction.ASC) Pageable pageable,
+			@RequestParam(required = false) String reserved,
 			Model model) {
 		if (reserved != null) { // 決済が終わってreservations?reserved で呼び出された場合
 			try {
@@ -146,6 +148,12 @@ public class ReservationController {
 		return "redirect:/reservations?reserved";
 	}
 	 */
+
+	@PostMapping("/houses/{id}/reservations/create")
+	public String createReservation(@ModelAttribute Map<String, String> reservationRegisterForm) {
+		reservationService.create(reservationRegisterForm);
+		return "redirect:/reservations?reserved";
+	}
 
 	@PostMapping
 	public String reserve(@ModelAttribute("reservationInputForm") ReservationInputForm reservationInputForm,

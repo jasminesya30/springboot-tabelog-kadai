@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.tabelog.entity.Category;
 import com.example.tabelog.entity.House;
@@ -36,9 +39,14 @@ public class CategoryController {
 	}
 
 	@GetMapping
-	public String listCategories(Model model) {
-		List<Category> categories = categoryService.findAll();
-		model.addAttribute("categories", categories);
+	public String listCategories(@RequestParam(value = "keyword", required = false) String keyword,
+			@RequestParam(value = "page", defaultValue = "0") int page,
+			Model model) {
+		// 検索機能を実装する
+		Page<Category> categoryPage = categoryService.searchCategories(keyword, PageRequest.of(page, 10));
+		model.addAttribute("categories", categoryPage.getContent());
+		model.addAttribute("categoryPage", categoryPage);
+		model.addAttribute("keyword", keyword);
 		return "admin/categories/category";
 	}
 
@@ -69,7 +77,7 @@ public class CategoryController {
 			categoryEditForm.setName(category.get().getName());
 			model.addAttribute("categoryEditForm", categoryEditForm);
 			model.addAttribute("categoryId", id);
-			return "admin/categories/show/edit";
+			return "admin/categories/edit";
 		} else {
 			return "redirect:/admin/categories";
 		}
@@ -81,14 +89,15 @@ public class CategoryController {
 			Model model) {
 		if (result.hasErrors()) {
 			model.addAttribute("categoryId", id);
-			return "admin/categories/show/edit";
+			return "admin/categories/edit";
 		}
+		model.addAttribute("categoryId", id);
 		Optional<Category> categoryOptional = categoryService.findById(id);
 		if (categoryOptional.isPresent()) {
 			Category category = categoryOptional.get();
 			category.setName(categoryEditForm.getName());
 			categoryService.save(category);
-		}
+		}	
 		return "redirect:/admin/categories";
 	}
 
@@ -112,4 +121,19 @@ public class CategoryController {
 		categoryService.deleteById(id);
 		return "redirect:/admin/categories";
 	}
+	
+	
+	@PostMapping("/create")
+	public String createCategory(@ModelAttribute Category category) {
+	    categoryService.save(category);
+	    return "redirect:/admin/categories";
+	}
+	
+	@PostMapping("/{id}/update")
+	public String updateCategory(@PathVariable("id") Long id, @ModelAttribute Category category) {
+		category.setId(id);
+	    categoryService.save(category);
+	    return "redirect:/admin/categories";
+	}
+
 }

@@ -1,6 +1,5 @@
 package com.example.tabelog.controller;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -62,7 +61,7 @@ public class ReviewController {
 			userId = 0; // デフォルトのユーザーIDを設定
 		}
 		reviewService.saveReview(userId, houseId, review);
-		System.out.println("Review created at: " + review.getCreatedAt()); // デバッグログ追加
+		// System.out.println("Review created at: " + review.getCreatedAt()); // デバッグログ追加
 		return "redirect:/houses/" + houseId;
 	}
 
@@ -77,13 +76,13 @@ public class ReviewController {
 		review.setRating(5); // 適切な評価を設定してください（ここでは仮に5としています）
 
 		// 現在の日時を設定（テスト用）
-		review.setCreatedAt(LocalDateTime.now());
+		// review.setCreatedAt(LocalDateTime.now());
 
 		// レビューの保存処理
 		reviewService.saveReview(review);
 
 		// デバッグログを追加
-		System.out.println("Review created at: " + review.getCreatedAt()); // 現在の日時をログ出力
+		// System.out.println("Review created at: " + review.getCreatedAt()); // 現在の日時をログ出力
 		// メッセージをリダイレクト先に渡す
 		redirectAttributes.addFlashAttribute("message", "レビューが投稿されました");
 

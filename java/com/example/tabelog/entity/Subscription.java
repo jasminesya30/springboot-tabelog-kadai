@@ -1,7 +1,5 @@
 package com.example.tabelog.entity;
 
-import java.time.LocalDateTime;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,8 +23,8 @@ public class Subscription {
 	@JoinColumn(name = "user_id", nullable = false)
 	private User user; // ユーザーとの紐づけ
 
-	private LocalDateTime createdAt;
-	private LocalDateTime updatedAt;
+	/*private LocalDateTime createdAt;
+	private LocalDateTime updatedAt;*/
 
 	// ゲッターとセッター
 	public Long getId() {
@@ -61,7 +59,7 @@ public class Subscription {
 		this.user = user;
 	}
 
-	public LocalDateTime getCreatedAt() {
+	/*public LocalDateTime getCreatedAt() {
 		return createdAt;
 	}
 
@@ -75,5 +73,5 @@ public class Subscription {
 
 	public void setUpdatedAt(LocalDateTime updatedAt) {
 		this.updatedAt = updatedAt;
-	}
+	}*/
 }

@@ -1,6 +1,5 @@
 package com.example.tabelog.service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -54,9 +53,9 @@ public class ReviewService {
 		newReview.setHouse(house);
 		newReview.setContent(review.getContent()); // もとのレビューから内容をコピー
 		newReview.setRating(review.getRating()); // もとのレビューから評価をコピー
-		newReview.setCreatedAt(LocalDateTime.now()); // 現在の日時を設定
+		// newReview.setCreatedAt(LocalDateTime.now()); // 現在の日時を設定
 
-		System.out.println("Review created at: " + newReview.getCreatedAt()); // デバッグログ
+		// System.out.println("Review created at: " + newReview.getCreatedAt()); // デバッグログ
 
 		// 新しいレビューとして保存
 		return reviewRepository.save(newReview);
