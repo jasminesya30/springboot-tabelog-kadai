@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+	<div th:replace="~{fragment :: meta}"></div>
+	<div th:replace="~{fragment :: styles}"></div>
+	<title>サブスクリプション</title>
+</head>
+
+<body>
+	<div class="samuraitravel-wrapper">
+		<!-- ヘッダー -->
+		<div th:replace="~{fragment :: header}"></div>
+
+		<main>
+			<div class="container pt-4 pb-5 samuraitravel-container">
+				<div class="row justify-content-center">
+					<div class="col-xl-6 col-lg-8 col-md-10">
+						<h1 class="mb-4 text-center">サブスクリプション</h1>
+
+						<!-- エラーメッセージ -->
+						<div th:if="${error}" class="alert alert-danger">
+							<span th:text="${error}"></span>
+						</div>
+
+						<!-- 成功メッセージ -->
+						<div th:if="${subscription}" class="alert alert-success">
+							<span>サブスクリプションが正常に処理されました。</span>
+						</div>
+
+						<!-- サブスクリプション情報 -->
+						<div th:if="${subscriptions != null}">
+							<h2>現在のサブスクリプション</h2>
+							<table class="table">
+								<thead>
+									<tr>
+										<th>サブスクリプションID</th>
+										<th>ステータス</th>
+										<th>作成日時</th>
+										<th>終了日時</th>
+										<th>操作</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="subscription : ${subscriptions.data}">
+										<td th:text="${subscription.id}"></td>
+										<td th:text="${subscription.getStatus()}"></td>
+										<td
+											th:text="${#temporals.format(subscription.getCreated(), 'yyyy-MM-dd HH:mm:ss')}">
+										</td>
+										<td
+											th:text="${subscription.getCurrentPeriodEnd() != null ? #temporals.format(subscription.getCurrentPeriodEnd(), 'yyyy-MM-dd HH:mm:ss') : '未設定'}">
+										</td>
+										<td>
+											<form th:action="@{/subscriptions/cancel}" method="post">
+												<input type="hidden" name="subscriptionId"
+													th:value="${subscription.id}" />
+												<input type="hidden" name="customerId" th:value="${customerId}" />
+												<button type="submit" class="btn btn-danger">キャンセル</button>
+											</form>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+
+						<!-- サブスクリプション登録 -->
+						<form th:action="@{/subscriptions/create}" method="post" class="center-form">
+							<input type="hidden" name="customerId" th:value="${customerId}" />
+							<input type="hidden" name="priceId" value="price_1234567890abcdef" /> <!-- 固定の Price ID -->
+							<button type="submit" class="samuraitravel-btn-submit">サブスクリプションを登録</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</main>
+
+		<!-- フッター -->
+		<div th:replace="~{fragment :: footer}"></div>
+	</div>
+
+	<div th:replace="~{fragment :: scripts}"></div>
+</body>
+
+</html>

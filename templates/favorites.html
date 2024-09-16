@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>お気に入り一覧</title>
+	<th:fragment="meta">
+		</th:fragment>
+		<th:fragment="styles">
+			</th:fragment>
+</head>
+
+<body>
+	<th:fragment="header">
+		</th:fragment>
+
+		<div class="container mt-5">
+			<h2>お気に入り一覧</h2>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>店舗名</th>
+						<th>住所</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="favorite : ${favorites}">
+						<td th:text="${favorite.house.name}"></td>
+						<td th:text="${favorite.house.address}"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<th:fragment="footer">
+			</th:fragment>
+			<th:fragment="scripts">
+				</th:fragment>
+</body>
+
+</html>
