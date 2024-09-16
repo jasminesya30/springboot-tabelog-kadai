@@ -1,5 +1,6 @@
 package com.example.tabelog.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
@@ -20,6 +21,7 @@ import com.example.tabelog.entity.House;
 import com.example.tabelog.form.HouseEditForm;
 import com.example.tabelog.form.HouseRegisterForm;
 import com.example.tabelog.repository.HouseRepository;
+import com.example.tabelog.service.CategoryService;
 import com.example.tabelog.service.HouseService;
 
 @Controller
@@ -27,11 +29,14 @@ import com.example.tabelog.service.HouseService;
 public class AdminHouseController {
 	private final HouseRepository houseRepository;
 	private final HouseService houseService;
+	private final CategoryService categoryService;
 
-	public AdminHouseController(HouseRepository houseRepository, HouseService houseService) {
+	@Autowired
+	public AdminHouseController(HouseRepository houseRepository, HouseService houseService,
+			CategoryService categoryService) {
 		this.houseRepository = houseRepository;
 		this.houseService = houseService;
-
+		this.categoryService = categoryService;
 	}
 
 	@GetMapping
@@ -64,6 +69,7 @@ public class AdminHouseController {
 	@GetMapping("/register")
 	public String register(Model model) {
 		model.addAttribute("houseRegisterForm", new HouseRegisterForm());
+		model.addAttribute("categories", categoryService.findAll());
 		return "admin/houses/register";
 	}
 
@@ -106,13 +112,13 @@ public class AdminHouseController {
 
 		return "redirect:/admin/houses";
 	}
-	
-    @PostMapping("/{id}/delete")
-    public String delete(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes) {        
-        houseRepository.deleteById(id);
-                
-        redirectAttributes.addFlashAttribute("successMessage", "店舗を削除しました。");
-        
-        return "redirect:/admin/houses";
-    }    
+
+	@PostMapping("/{id}/delete")
+	public String delete(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes) {
+		houseRepository.deleteById(id);
+
+		redirectAttributes.addFlashAttribute("successMessage", "店舗を削除しました。");
+
+		return "redirect:/admin/houses";
+	}
 }

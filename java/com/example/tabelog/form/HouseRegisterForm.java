@@ -17,6 +17,9 @@ public class HouseRegisterForm {
 	@NotBlank(message = "説明を入力してください。")
 	private String description;
 
+	@NotNull(message = "カテゴリを入力してください。")
+	private Integer categoryId;
+	
 	@NotNull(message = "料金目安を入力してください。")
 	@Min(value = 1, message = "料金目安は1円以上に設定してください。")
 	private Integer price;
@@ -33,4 +36,13 @@ public class HouseRegisterForm {
 
 	@NotBlank(message = "電話番号を入力してください。")
 	private String phoneNumber;
+
+	// Getter and Setter for categoryId
+	public Integer getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(Integer categoryId) {
+		this.categoryId = categoryId;
+	}
 }

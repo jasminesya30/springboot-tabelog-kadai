@@ -35,6 +35,9 @@ public class HouseService {
 	@Transactional
 	public void create(HouseRegisterForm houseRegisterForm) {
 		House house = new House();
+
+		house.setCategoryId(houseRegisterForm.getCategoryId());
+
 		MultipartFile imageFile = houseRegisterForm.getImageFile();
 
 		if (imageFile != null && !imageFile.isEmpty()) {

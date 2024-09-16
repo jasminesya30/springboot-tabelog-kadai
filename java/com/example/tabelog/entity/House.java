@@ -28,7 +28,7 @@ public class House {
 	@Column(name = "description")
 	private String description;
 
-	@Column(name = "category_id")
+	@Column(name = "category_id", nullable = false)
 	private Integer categoryId;
 
 	@Column(name = "price")
@@ -51,4 +51,13 @@ public class House {
 
 	@Column(name = "updated_at", insertable = false, updatable = false)
 	private Timestamp updatedAt;
+
+	// Getter and Setter for categoryId
+	public Integer getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(Integer categoryId) {
+		this.categoryId = categoryId;
+	}
 }
