@@ -15,11 +15,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.tabelog.entity.Category;
 import com.example.tabelog.entity.House;
 import com.example.tabelog.form.CategoryEditForm;
 import com.example.tabelog.form.CategoryRegisterForm;
+import com.example.tabelog.repository.CategoryRepository;
 import com.example.tabelog.service.CategoryService;
 import com.example.tabelog.service.HouseService;
 
@@ -31,11 +33,14 @@ public class CategoryController {
 
 	private final CategoryService categoryService;
 	private final HouseService houseService;
+	private final CategoryRepository categoryRepository;
 
 	@Autowired
-	public CategoryController(CategoryService categoryService, HouseService houseService) {
+	public CategoryController(CategoryService categoryService, HouseService houseService,
+			CategoryRepository categoryRepository) {
 		this.categoryService = categoryService;
 		this.houseService = houseService;
+		this.categoryRepository = categoryRepository;
 	}
 
 	@GetMapping
@@ -97,7 +102,7 @@ public class CategoryController {
 			Category category = categoryOptional.get();
 			category.setName(categoryEditForm.getName());
 			categoryService.save(category);
-		}	
+		}
 		return "redirect:/admin/categories";
 	}
 
@@ -121,19 +126,27 @@ public class CategoryController {
 		categoryService.deleteById(id);
 		return "redirect:/admin/categories";
 	}
-	
-	
+
 	@PostMapping("/create")
 	public String createCategory(@ModelAttribute Category category) {
-	    categoryService.save(category);
-	    return "redirect:/admin/categories";
+		categoryService.save(category);
+		return "redirect:/admin/categories";
 	}
-	
+
 	@PostMapping("/{id}/update")
 	public String updateCategory(@PathVariable("id") Long id, @ModelAttribute Category category) {
 		category.setId(id);
-	    categoryService.save(category);
-	    return "redirect:/admin/categories";
+		categoryService.save(category);
+		return "redirect:/admin/categories";
+	}
+
+	@PostMapping("/{id}/delete")
+	public String delete(@PathVariable(name = "id") Long id, RedirectAttributes redirectAttributes) {
+		categoryRepository.deleteById(id);
+
+		redirectAttributes.addFlashAttribute("successMessage", "カテゴリを削除しました。");
+
+		return "redirect:/admin/categories";
 	}
 
 }

@@ -85,10 +85,10 @@ public class AdminHouseController {
 			return "admin/houses/register";
 		}
 
-		houseService.create(houseRegisterForm);
+		Integer newId = houseService.create(houseRegisterForm);
 		redirectAttributes.addFlashAttribute("successMessage", "店舗を登録しました。");
 
-		return "redirect:/admin/houses";
+		return "redirect:/admin/houses/" + newId;
 	}
 
 	@GetMapping("/{id}/edit")

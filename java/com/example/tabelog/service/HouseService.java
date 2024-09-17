@@ -33,7 +33,7 @@ public class HouseService {
 	}
 
 	@Transactional
-	public void create(HouseRegisterForm houseRegisterForm) {
+	public Integer create(HouseRegisterForm houseRegisterForm) {
 		House house = new House();
 
 		house.setCategoryId(houseRegisterForm.getCategoryId());
@@ -57,6 +57,7 @@ public class HouseService {
 		house.setPhoneNumber(houseRegisterForm.getPhoneNumber());
 
 		houseRepository.save(house);
+		return house.getId();
 	}
 
 	@Transactional
