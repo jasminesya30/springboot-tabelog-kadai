@@ -103,13 +103,18 @@ public class AdminHouseController {
 		model.addAttribute("imageName", imageName);
 		model.addAttribute("houseEditForm", houseEditForm);
 
+		List<Category> categories = categoryService.findAll();
+		model.addAttribute("categories", categories);
+
 		return "admin/houses/edit";
 	}
 
 	@PostMapping("/{id}/update")
 	public String update(@ModelAttribute @Validated HouseEditForm houseEditForm, BindingResult bindingResult,
-			RedirectAttributes redirectAttributes) {
+			RedirectAttributes redirectAttributes, Model model) {
 		if (bindingResult.hasErrors()) {
+			List<Category> categories = categoryService.findAll();
+			model.addAttribute("categories", categories);
 			return "admin/houses/edit";
 		}
 
