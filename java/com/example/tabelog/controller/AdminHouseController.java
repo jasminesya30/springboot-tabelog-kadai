@@ -1,5 +1,7 @@
 package com.example.tabelog.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.tabelog.entity.Category;
 import com.example.tabelog.entity.House;
 import com.example.tabelog.form.HouseEditForm;
 import com.example.tabelog.form.HouseRegisterForm;
@@ -75,8 +78,10 @@ public class AdminHouseController {
 
 	@PostMapping("/create")
 	public String create(@ModelAttribute @Validated HouseRegisterForm houseRegisterForm, BindingResult bindingResult,
-			RedirectAttributes redirectAttributes) {
+			RedirectAttributes redirectAttributes, Model model) {
 		if (bindingResult.hasErrors()) {
+			List<Category> categories = categoryService.findAll();
+			model.addAttribute("categories", categories);
 			return "admin/houses/register";
 		}
 
@@ -91,6 +96,7 @@ public class AdminHouseController {
 		House house = houseRepository.getReferenceById(id);
 		String imageName = house.getImageName();
 		HouseEditForm houseEditForm = new HouseEditForm(house.getId(), house.getName(), null, house.getDescription(),
+				house.getCategoryId(),
 				house.getPrice(), house.getCapacity(), house.getPostalCode(), house.getAddress(),
 				house.getPhoneNumber());
 

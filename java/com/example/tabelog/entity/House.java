@@ -29,7 +29,7 @@ public class House {
 	private String description;
 
 	@Column(name = "category_id", nullable = false)
-	private Integer categoryId;
+	private String categoryId;
 
 	@Column(name = "price")
 	private Integer price;
@@ -53,11 +53,11 @@ public class House {
 	private Timestamp updatedAt;
 
 	// Getter and Setter for categoryId
-	public Integer getCategoryId() {
+	public String getCategoryId() {
 		return categoryId;
 	}
 
-	public void setCategoryId(Integer categoryId) {
+	public void setCategoryId(String categoryId) {
 		this.categoryId = categoryId;
 	}
 }

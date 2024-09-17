@@ -17,8 +17,8 @@ public class HouseRegisterForm {
 	@NotBlank(message = "説明を入力してください。")
 	private String description;
 
-	@NotNull(message = "カテゴリを入力してください。")
-	private Integer categoryId;
+	@NotBlank(message = "カテゴリを選択してください。")
+	private String categoryId;
 	
 	@NotNull(message = "料金目安を入力してください。")
 	@Min(value = 1, message = "料金目安は1円以上に設定してください。")
@@ -38,11 +38,11 @@ public class HouseRegisterForm {
 	private String phoneNumber;
 
 	// Getter and Setter for categoryId
-	public Integer getCategoryId() {
+	public String getCategoryId() {
 		return categoryId;
 	}
 
-	public void setCategoryId(Integer categoryId) {
+	public void setCategoryId(String categoryId) {
 		this.categoryId = categoryId;
 	}
 }

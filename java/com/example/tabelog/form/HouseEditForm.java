@@ -18,6 +18,9 @@ public class HouseEditForm {
 	private String name;
 
 	private MultipartFile imageFile;
+	
+	@NotBlank(message = "カテゴリを選択してください。")
+	private String categoryId;
 
 	@NotBlank(message = "説明を入力してください。")
 	private String description;
