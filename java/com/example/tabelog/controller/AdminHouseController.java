@@ -121,7 +121,7 @@ public class AdminHouseController {
 		houseService.update(houseEditForm);
 		redirectAttributes.addFlashAttribute("successMessage", "店舗情報を編集しました。");
 
-		return "redirect:/admin/houses";
+		return "redirect:/admin/houses/{id}";
 	}
 
 	@PostMapping("/{id}/delete")
